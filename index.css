@@ -1,0 +1,33 @@
+body{
+    
+}
+
+div{
+    border: 2px solid black;
+    width: 200px;
+    background-color:rgba(0,0,0, 0.9);
+    font-size: 30px;
+    margin: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+
+
+p{
+    color: white;
+    text-align: center;
+    font-weight: bold
+}
+
+
+button{
+    color: white;
+    width: 200px;
+    background-color:rgba(0,0,0, 0.9);
+    font-size: 30px;
+    padding:30px 50px;
+    font-weight: bold
+    
+}
