@@ -1,33 +1,68 @@
 body{
+    background-color: cadetblue;
     
 }
 
-div{
-    border: 2px solid black;
-    width: 200px;
-    background-color:rgba(0,0,0, 0.9);
-    font-size: 30px;
-    margin: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    
-}
-
-
-
-p{
-    color: white;
-    text-align: center;
-    font-weight: bold
-}
-
-
-button{
+#submit{
     color: white;
     width: 200px;
     background-color:rgba(0,0,0, 0.9);
     font-size: 30px;
     padding:30px 50px;
-    font-weight: bold
+    font-weight: bold;
+    position:absolute;
+    left:0;
+    right:0;
+    top:40%;
+    bottom:45%;
+    margin:auto;
+    position: absolute;
+    border-radius: 10px;
+}
+
+#submit:hover{
+    text-decoration: underline;
+    border: white  solid 5px;
+}
+
+/*.main{ 
+    background-color: cadetblue;
+    margin:0 auto; 
+    width:100%; 
+    max-width:700px;
+}*/
+
+.leftBlock{
+    background-color: rgb(39, 39, 91);
+    position: left ;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    border-right: black solid 3px;
+}
+
+.content{
     
 }
+
+.rightBlock{
+    background-color: rgb(39, 39, 91);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    border-left: black solid 3px;
+}
+
+p{
+    color: whitesmoke;
+    font-size: 30px;
+    font-weight: 600;
+    margin-left: 40px;
+}
+
+
+
