@@ -55,13 +55,17 @@ el.addEventListener("click",clickReaction,);
 
 function moveUp(event){
     if (event.code == 'ArrowUp') {
+        // находим ячейки, которые принадлежат игроку
         const playerCells = cells.filter((cell) => cell.isPlayer);
+
+        // раскрашиваем ячейки, которые принадлежат игроку
         for (const cell of playerCells) {
             cell.isPlayer = false;
         }
 
         console.log('Current', playerCells);
 
+        // смещаем игрока
         const newCoords = playerCells
             .map((cell) => {
                 return {x: cell.x, y: cell.y - 1}
@@ -69,6 +73,7 @@ function moveUp(event){
 
         console.log('new', newCoords);
 
+        // закрашиваем ячейки игрока
         for (const coord of newCoords) {
             const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
             cell.isPlayer = true;
