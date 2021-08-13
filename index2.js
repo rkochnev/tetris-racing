@@ -21,18 +21,27 @@ function clickReaction () {
                 element: elem,
             };
             cells.push(metadata);
-
+            //объйвление игрока
             if (y >= 28 && (x === 4 || x === 5)) {
                 metadata.isPlayer = true;
                 playerState.points.push(metadata);
             }
+            //объявление препятствий 
+            if ((y <= 7 && y >= 5) && ( x===0 || x === 1 || x === 2)) {
+                metadata.isBlock = true;
+                playerState.points.push(metadata);
+            }
         }
     }
-
+    
     setTimeout(tick, 1000);
+
 }
 
+
 function tick() {
+    moveBlock();
+
     for (const cell of cells) {
         if (cell.isPlayer) {
             cell.element.classList.remove('is-block');
@@ -82,3 +91,120 @@ function moveUp(event){
     }};
 
 document.addEventListener('keydown',moveUp);
+
+
+function movedown(event) {
+    if(event.code == 'ArrowDown') {
+        const playerCells = cells.filter((cell) => cell.isPlayer);
+
+        for (const cell of playerCells) {
+            cell.isPlayer = false;
+        }
+
+        console.log('Current',playerCells);
+
+        const newCoords = playerCells
+            .map((cell) => {
+                return {x: cell.x, y: cell.y + 1}
+            });
+        
+        console.log('new', newCoords);
+
+        for (const coord of newCoords) {
+            const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+            cell.isPlayer = true;
+        }
+    }
+};
+
+document.addEventListener('keydown',movedown);
+
+
+
+function moveright(event){
+    if(event.code == 'ArrowRight') {
+        const playerCells = cells.filter((cell) => cell.isPlayer);
+
+        for (const cell of playerCells) {
+            cell.isPlayer = false;
+        }
+
+        console.log('Current',playerCells);
+
+        const newCoords = playerCells
+            .map((cell) => {
+                return {x: cell.x + 1, y: cell.y}
+            });
+
+        console.log('new', newCoords);
+
+        for (const coord of newCoords) {
+            const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+            cell.isPlayer = true;
+        }
+    }
+};
+
+document.addEventListener('keydown', moveright);
+
+function moveleft(event) {
+    if (event.code == 'ArrowLeft') {
+        const playerCells = cells.filter((cell) => cell.isPlayer);
+
+        for (const cell of playerCells) {
+            cell.isPlayer = false;
+        }
+
+        console.log('Current', playerCells);
+
+        const newCoords = playerCells
+            .map((cell) => {
+                return{ x: cell.x - 1, y: cell.y}
+            });
+
+        console.log('new', newCoords);
+
+        for (const coord of newCoords) {
+            const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+            cell.isPlayer = true;
+        }
+    }
+};
+
+document.addEventListener('keydown', moveleft);
+
+
+function moveBlock() {
+    const blockCells = cells.filter((cell) => cell.isBlock);
+
+    console.log(blockCells)
+
+    for (const cell of blockCells) {
+        cell.isBlock = false;
+    }
+
+    const newCoords = blockCells
+        .map((cell) => {
+            return {x: cell.x, y: cell.y + 1}
+        });
+        console.log(newCoords)
+    for (const coord of newCoords) {
+        const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+        cell.isBlock = true;
+    }
+}
+
+
+/*for (const cell of cells){
+    if (cell.isBlock) {
+        cell.isBlock = false;
+        const newCoords = blockCells
+            .map((cell) => {
+                return {x: cell.x, y: cell.y + 1}
+            });
+        for (const coord of newCoords) {
+            const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+            cell.isBlock = true;
+        }
+    }
+};*/

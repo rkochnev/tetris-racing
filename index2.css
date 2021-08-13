@@ -77,3 +77,7 @@ canvas {
 .is-player {
     background-color: red;
 }
+
+.is-block {
+    background-color: yellow;
+}
