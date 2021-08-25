@@ -1,8 +1,8 @@
-const cells = [];
-const playerState = {
-    isAlive: true,
-    points: [],
-};
+let cells = [];
+let countEnemyCars = 0;
+let timerId = null;
+
+const countCellsInEnemyCar = 6;
 
 function clickReaction() {
     const gamefield = document.getElementById("gameField");
@@ -27,35 +27,74 @@ function clickReaction() {
                 (y === 28 && x === 5) || (y === 27 && x === 4) ||
                 (y === 27 && x === 6) || (y === 26 && x === 5)) {
                 metadata.isPlayer = true;
-                playerState.points.push(metadata);
             }
 
-            if ((x === 1 && y === 4) || (x === 0 && y === 5) ||
-                (x === 2 && y === 5) || (x === 1 && y === 6) ||
-                (x === 0 && y === 7) || (x === 2 && y === 7)) {
-
-                metadata.isBlock = true;
-                playerState.points.push(metadata);
-            }
-
-            if ((x === 7 && y === 4) || (x === 9 && y === 4) ||
-                (x === 8 && y === 1) || (x === 7 && y === 2) ||
-                (x === 9 && y === 2) || (x === 8 && y === 3)) {
-
-                metadata.isBlock = true;
-                playerState.points.push(metadata);
-            }
+            createEnemyCar(0, 4);
+            createEnemyCar(7, 1);
+           
         }
     }
 
-    setTimeout(tick, 1000);
+    timerId = setTimeout(tick, 300);
 
+}
+
+function createEnemyCar(x, y) {
+    const carCoords = [
+        {
+            x: x + 1,
+            y: y,
+        },
+        {
+            x: x,
+            y: y + 1,
+        },
+        {
+            x: x + 2,
+            y: y + 1,
+        },
+        {
+            x: x + 1,
+            y: y + 2,
+        },
+        {
+            x: x,
+            y: y + 3,
+        },
+        {
+            x: x + 2,
+            y: y + 3,
+        },
+    ];
+
+    for (const coord of carCoords) {
+        const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
+        if (cell != null) {
+            cell.isBlock = true
+        }
+    }
+
+    countEnemyCars += 1;
 }
 
 
 function tick() {
     moveBlock();
-    crush();
+    if (countEnemyCars < 2) {
+        createEnemyCar(Math.floor(Math.random() * 3)+1, Math.floor(Math.random() * 2));
+        createEnemyCar(Math.floor(Math.random() * 7)+ 6, 3);
+        console.log(timerId);
+         
+    } 
+    
+
+    
+    
+    
+
+
+    
+    
 
     for (const cell of cells) {
         if (cell.isPlayer) {
@@ -69,9 +108,9 @@ function tick() {
             cell.element.classList.remove('is-block');
         }
     }
-
+    crush();
     
-    setTimeout(tick, 200);
+    timerId = setTimeout(tick, 200);
 }
 
 
@@ -97,7 +136,16 @@ function moveUp(event) {
                 return { x: cell.x, y: cell.y - 1 }
             });
 
-        console.log('new', newCoords);
+            const carInOutOfBounce = newCoords.some((coord) => coord.y < 0);
+
+            console.log('new', newCoords, carInOutOfBounce);
+    
+            if (carInOutOfBounce) {
+                for (const cell of playerCells) {
+                    cell.isPlayer = true;
+                }
+                return;
+            }
 
         // закрашиваем ячейки игрока
         for (const coord of newCoords) {
@@ -126,7 +174,16 @@ function movedown(event) {
                 return { x: cell.x, y: cell.y + 1 }
             });
 
-        console.log('new', newCoords);
+            const carInOutOfBounce = newCoords.some((coord) => coord.y > 29);
+
+            console.log('new', newCoords, carInOutOfBounce);
+    
+            if (carInOutOfBounce) {
+                for (const cell of playerCells) {
+                    cell.isPlayer = true;
+                }
+                return;
+            }
 
         for (const coord of newCoords) {
             const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
@@ -151,20 +208,25 @@ function moveright(event) {
 
         const newCoords = playerCells
             .map((cell) => {
-                return { x: cell.x + 1, y: cell.y }
+                return {x: cell.x + 1, y: cell.y }
             });
 
-        console.log('new', newCoords);
+         const carInOutOfBounce = newCoords.some((coord) => coord.x > 9);
+
+        console.log('new', newCoords, carInOutOfBounce);
+
+        if (carInOutOfBounce) {
+            for (const cell of playerCells) {
+                cell.isPlayer = true;
+            }
+            return;
+        }
 
         for (const coord of newCoords) {
             const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
-            if (coord.x < 10){
-            cell.isPlayer = true;}
-            else {
-                coord.x === 1;
-            }
-           
+            cell.isPlayer = true;
         }
+        
     }
 };
 
@@ -182,19 +244,25 @@ function moveleft(event) {
 
         const newCoords = playerCells
             .map((cell) => {
-                return { x: cell.x - 1, y: cell.y }
+                return {x: cell.x - 1, y: cell.y }
             });
 
-        console.log('new', newCoords);
+            const carInOutOfBounce = newCoords.some((coord) => coord.x < 0);
 
+            console.log('new', newCoords, carInOutOfBounce);
+    
+            if (carInOutOfBounce) {
+                for (const cell of playerCells) {
+                    cell.isPlayer = true;
+                }
+                return;
+            }
+        
         for (const coord of newCoords) {
             const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
-            if (coord.x >= 0) {
-            cell.isPlayer = true;}
-            else {
-                coord.x = 10;
-            }
-        }
+            cell.isPlayer = true;
+        }      
+        
     }
 };
 
@@ -225,23 +293,45 @@ function moveBlock() {
     for (const coord of newCoords) {
         
         const cell = cells.find((cell) => coord.x === cell.x && coord.y === cell.y)
-        if (coord.y < 29){
-        cell.isBlock = true}
-         else {
-            cell.isBlock = false;
-            ;
-        
-         }   
+        if (coord.y <= 29) {
+            cell.isBlock = true
+        }
     }
+    countEnemyCars = Math.round(cells.filter((cell) => cell.isBlock).length / countCellsInEnemyCar);    
 };
 
 
 
 function crush() {
-    let playerCells = document.querySelectorAll('.is-player');
-    let blockCells = document.querySelectorAll('.is-block');    
+    let player = cells.filter((cell) => cell.isPlayer);
+    let block = cells.filter((cell) => cell.isBlock);
+
+for (const cellPlayer of player) {
+    for(const cellBlock of block) {
+        if (cellPlayer == cellBlock) {
+            alert('Game over');
+            resetGame();
+
+        }
+
+    }
+}
+};
+
+function resetGame() {
+    clearTimeout(timerId);
+    cells = [];
+    const gamefield = document.getElementById("gameField");
+    const button = document.getElementById("submit");
+    button.classList.remove("invisiblebutton");
+    gamefield.innerHTML = '';
 
 }
+
+
+let score = document.querySelector('.time');
+score.innerHTML = timerId   
+
 
 
 

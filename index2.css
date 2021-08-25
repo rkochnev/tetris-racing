@@ -21,7 +21,7 @@ body {
     border-radius: 10px;
 }
 
-p{
+.score{
     color: teal;
     font-size: 50px;
     font-weight: 500;
@@ -81,3 +81,4 @@ canvas {
 .is-block {
     background-color: white;
 }
+
