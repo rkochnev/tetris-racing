@@ -5,6 +5,7 @@ let timerId = null;
 const countCellsInEnemyCar = 6;
 
 function clickReaction() {
+    
     const gamefield = document.getElementById("gameField");
     const button = document.getElementById("submit");
     button.classList.add("invisiblebutton");
@@ -21,6 +22,7 @@ function clickReaction() {
                 element: elem,
             };
             cells.push(metadata);
+            
             //объйвление игрока
 
             if ((y === 29 && x === 4) || (y === 29 && x === 6) ||
@@ -31,6 +33,13 @@ function clickReaction() {
 
             createEnemyCar(0, 4);
             createEnemyCar(7, 1);
+        //     console.log(counter());
+        // let score =  document.querySelector('.time');
+        // score.innerHTML = counter();
+
+            
+
+            
            
         }
     }
@@ -75,27 +84,86 @@ function createEnemyCar(x, y) {
     }
 
     countEnemyCars += 1;
+
+    // function makeCounter() {
+    //     let currentCount = 0;
+    //     return function() {
+    //         currentCount = currentCount + 5;
+    //         return currentCount;
+    //     };}
+    //     let counter = makeCounter();
+    //     console.log(counter());
+
 }
+
+
+function makeCounter() {
+    let currentCount = 0;
+    return function() {
+        currentCount = currentCount + 1;
+        return currentCount;
+    };}
+    let counter = makeCounter();
+    console.log(counter());
+
+
+// function makeCounter() {
+//     const button = document.getElementById("submit");
+//     let currentCount = 0;
+//     if (button.classList.contains("invisiblebutton")){
+//         return function() {
+//             currentCount = currentCount + 1;
+//             return currentCount;
+//         }
+//     } else {
+//         return function() {
+//             currentCount = 0;
+//             return currentCount;
+//         }
+//     }
+// }
+
+// let counter = makeCounter();
+
+
+    
+    
+    
+
 
 
 function tick() {
     moveBlock();
-    if (countEnemyCars < 2) {
-        createEnemyCar(Math.floor(Math.random() * 3)+1, Math.floor(Math.random() * 2));
-        createEnemyCar(Math.floor(Math.random() * 7)+ 6, 3);
-        console.log(timerId);
+    if (countEnemyCars < 1) {
+        createEnemyCar(Math.floor(Math.random() * 4), 0);
+        createEnemyCar(Math.floor(Math.random() * 8)+ 4, 7);
          
+        const button = document.getElementById("submit");
+    if (button.classList.contains("invisiblebutton")){
+    console.log(counter());
+        let score =  document.querySelector('.time');
+        score.innerHTML = counter();}
+        else {
+            score.innerHTML = counter() = null;
+        }
+
+
+    //  let score =  document.querySelector('.time');
+    //     score.innerHTML = counter();
+
+
+
+
+
+
+
+
+    
+
     } 
-    
 
+   
     
-    
-    
-
-
-    
-    
-
     for (const cell of cells) {
         if (cell.isPlayer) {
             cell.element.classList.remove('is-block');
@@ -112,6 +180,8 @@ function tick() {
     
     timerId = setTimeout(tick, 200);
 }
+
+
 
 
 const el = document.getElementById("submit");
@@ -270,7 +340,14 @@ document.addEventListener('keydown', moveleft);
 
 
 function moveBlock() {
-
+    // const button = document.getElementById("submit");
+    // if (button.classList.contains("invisiblebutton")){
+    // console.log(counter());
+    //     let score =  document.querySelector('.time');
+    //     score.innerHTML = counter();}
+    //     else {console.log(counter());
+    //         let score =  document.querySelector('.time');
+    //         score.innerHTML = '';}
     
     const blockCells = cells.filter((cell) => cell.isBlock);
 
@@ -297,7 +374,10 @@ function moveBlock() {
             cell.isBlock = true
         }
     }
-    countEnemyCars = Math.round(cells.filter((cell) => cell.isBlock).length / countCellsInEnemyCar);    
+    countEnemyCars = Math.round(cells.filter((cell) => cell.isBlock).length / countCellsInEnemyCar);   
+    
+    
+
 };
 
 
@@ -310,6 +390,7 @@ for (const cellPlayer of player) {
     for(const cellBlock of block) {
         if (cellPlayer == cellBlock) {
             alert('Game over');
+            
             resetGame();
 
         }
@@ -325,12 +406,12 @@ function resetGame() {
     const button = document.getElementById("submit");
     button.classList.remove("invisiblebutton");
     gamefield.innerHTML = '';
+    
+    
 
 }
 
 
-let score = document.querySelector('.time');
-score.innerHTML = timerId   
 
 
 
