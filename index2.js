@@ -1,11 +1,13 @@
 let cells = [];
 let countEnemyCars = 0;
 let timerId = null;
+let score = 0;
+let needStop = true;
 
 const countCellsInEnemyCar = 6;
 
 function clickReaction() {
-    
+    needStop = false;
     const gamefield = document.getElementById("gameField");
     const button = document.getElementById("submit");
     button.classList.add("invisiblebutton");
@@ -32,15 +34,7 @@ function clickReaction() {
             }
 
             createEnemyCar(0, 4);
-            createEnemyCar(7, 1);
-        //     console.log(counter());
-        // let score =  document.querySelector('.time');
-        // score.innerHTML = counter();
-
-            
-
-            
-           
+            createEnemyCar(7, 1); 
         }
     }
 
@@ -85,84 +79,22 @@ function createEnemyCar(x, y) {
 
     countEnemyCars += 1;
 
-    // function makeCounter() {
-    //     let currentCount = 0;
-    //     return function() {
-    //         currentCount = currentCount + 5;
-    //         return currentCount;
-    //     };}
-    //     let counter = makeCounter();
-    //     console.log(counter());
-
 }
 
 
-function makeCounter() {
-    let currentCount = 0;
-    return function() {
-        currentCount = currentCount + 1;
-        return currentCount;
-    };}
-    let counter = makeCounter();
-    console.log(counter());
 
-
-// function makeCounter() {
-//     const button = document.getElementById("submit");
-//     let currentCount = 0;
-//     if (button.classList.contains("invisiblebutton")){
-//         return function() {
-//             currentCount = currentCount + 1;
-//             return currentCount;
-//         }
-//     } else {
-//         return function() {
-//             currentCount = 0;
-//             return currentCount;
-//         }
-//     }
-// }
-
-// let counter = makeCounter();
-
-
-    
-    
-    
-
-
-
+const scoreEl = document.querySelector('.time');
 function tick() {
+    if (needStop) return;
     moveBlock();
+
+    score += 1;
+    scoreEl.innerHTML = score;
+
     if (countEnemyCars < 1) {
         createEnemyCar(Math.floor(Math.random() * 4), 0);
         createEnemyCar(Math.floor(Math.random() * 8)+ 4, 7);
-         
-        const button = document.getElementById("submit");
-    if (button.classList.contains("invisiblebutton")){
-    console.log(counter());
-        let score =  document.querySelector('.time');
-        score.innerHTML = counter();}
-        else {
-            score.innerHTML = counter() = null;
-        }
-
-
-    //  let score =  document.querySelector('.time');
-    //     score.innerHTML = counter();
-
-
-
-
-
-
-
-
-    
-
-    } 
-
-   
+    }
     
     for (const cell of cells) {
         if (cell.isPlayer) {
@@ -340,14 +272,6 @@ document.addEventListener('keydown', moveleft);
 
 
 function moveBlock() {
-    // const button = document.getElementById("submit");
-    // if (button.classList.contains("invisiblebutton")){
-    // console.log(counter());
-    //     let score =  document.querySelector('.time');
-    //     score.innerHTML = counter();}
-    //     else {console.log(counter());
-    //         let score =  document.querySelector('.time');
-    //         score.innerHTML = '';}
     
     const blockCells = cells.filter((cell) => cell.isBlock);
 
@@ -386,29 +310,30 @@ function crush() {
     let player = cells.filter((cell) => cell.isPlayer);
     let block = cells.filter((cell) => cell.isBlock);
 
-for (const cellPlayer of player) {
-    for(const cellBlock of block) {
-        if (cellPlayer == cellBlock) {
-            alert('Game over');
-            
-            resetGame();
+    for (const cellPlayer of player) {
+        for(const cellBlock of block) {
+            if (cellPlayer == cellBlock) {
+                alert('Game over');
+                
+                resetGame();
+                return;
+
+            }
 
         }
-
     }
-}
 };
 
 function resetGame() {
     clearTimeout(timerId);
+    needStop = true;
+    score = 0;
+    score.innerHTML = '';
     cells = [];
     const gamefield = document.getElementById("gameField");
     const button = document.getElementById("submit");
     button.classList.remove("invisiblebutton");
     gamefield.innerHTML = '';
-    
-    
-
 }
 
 
